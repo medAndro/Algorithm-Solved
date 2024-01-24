@@ -1,25 +1,39 @@
 N = int(input())
-A = list(map(int,input().split()))
-G = list(map(int,input().split()))
-maxVal = -1000000001
-minVal = 1000000001
-Garr = [0]*G[0] + [1]*G[1] + [2]*G[2] + [3]*G[3]
+A = list(map(int, input().split()))
+G = list(map(int, input().split()))
 
-import itertools as its
-for I in list(its.permutations(Garr, len(A)-1)):
-    calResult = A[0]
-    for j in range(len(A)-1):
-        if I[j] == 0:
-            calResult += A[j + 1]
-        elif I[j] == 1:
-            calResult -= A[j + 1]
-        elif I[j] == 2:
-            calResult *= A[j + 1]
-        elif I[j] == 3:
-            calResult = int(calResult / A[j + 1])
-    if calResult > maxVal:
-        maxVal = calResult
-    if calResult < minVal:
-        minVal = calResult
-print(maxVal)
-print(minVal)
+minV = 1000000001
+maxV = -1000000001
+
+def backTrack(idx, sum):
+    global minV, maxV
+    if idx == len(A):
+        if minV > sum:
+            minV = sum
+        if maxV < sum:
+            maxV = sum
+        return
+
+    for i in range(0, 4):
+
+        if G[i] == 0:
+            continue
+        else:
+            tempsum = 0
+            if i == 0:
+                tempsum = sum+A[idx]
+            elif i == 1:
+                tempsum = sum-A[idx]
+            elif i == 2:
+                tempsum = sum* A[idx]
+            elif i == 3:
+                if sum > 0 :
+                    tempsum = sum // A[idx]
+                elif sum <= 0:  tempsum = -(abs(sum)//A[idx])
+            G[i] -= 1
+            backTrack(idx+1, tempsum)
+            G[i] += 1
+
+backTrack(1, A[0])
+print(maxV)
+print(minV)
