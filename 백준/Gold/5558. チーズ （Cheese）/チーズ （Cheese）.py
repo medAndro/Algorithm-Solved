@@ -27,7 +27,6 @@
 # 모든 치즈를 다 먹기까지 걸리는 최단 시간(분)을 나타내는 정수를 한 줄에 출력하시오.
 
 from collections import deque
-import copy
 H, W, N = map(int, input().split()) #행의 수, 열의 수, 치즈공장의 수
 town = [list(input()) for _ in range(H)]
 mY = 0 # 초기 쥐구멍 y
@@ -45,7 +44,7 @@ minPaths = [] # 각 치즈공장까지의 최소 이동수를 저장
 currentCheese = 1 # 현재 목표인 치즈공장
 
 while currentCheese <= N:
-    ctown = copy.deepcopy(town) # 복사
+    ctown = [['.']*W for _ in range(H)]
     Q = deque([(mY, mX)])
     ctown[mY][mX] = 0
     while True:
