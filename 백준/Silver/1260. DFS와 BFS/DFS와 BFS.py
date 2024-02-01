@@ -1,57 +1,29 @@
 from collections import deque
 N, M, V = map(int, input().split())
-graph = {}
+graph = [[0]*(N+1) for _ in range(N+1)]
+
 for _ in range(M):
     a, b = map(int, input().split())
-    if a in graph:
-        if b not in graph[a]:
-            graph[a] += [b]
-    else:
-        graph[a] = [b]
-    if b in graph:
-        if a not in graph[b]:
-            graph[b] += [a]
-    else:
-        graph[b] = [a]
-#print(graph)
-N = len(graph)
+    graph[a][b] = graph[b][a] = 1
 
-bfsNodes = [V]
-bfsQ = deque([(V, graph.get(V))])
-def bfs():
-    global bfsNodes
-    while len(bfsNodes) < N:
-        #print(bfsQ)
-        #print(bfsNodes)
-        try:
-            current = bfsQ.pop()
-        except:
-            break
-
-        if current[1]:
-            nNode = list(sorted(current[1]))
-            for i in nNode:
-                if i not in bfsNodes:
-                    bfsNodes.append(i)
-                    deque.appendleft(bfsQ, (i, graph.get(i)))
-
-bfs()
-
-dfsNodes = []
-def dfs(node):
-    global dfsNodes
-    dfsNodes.append(node)
-    try:
-        nNode = list(sorted(graph.get(node)))
-        if len(nNode):
-            for i in nNode:
-                if i not in dfsNodes:
-                    #print(i)
-                    dfs(i)
-    except:
-        None
+visited = [0]*(N+1)
+def dfs(v):
+    visited[v] = 1
+    print(v, end=" ")
+    for g in range(N+1):
+        if visited[g] == 0 and graph[v][g]:
+            dfs(g)
 dfs(V)
-
-print(" ".join(map(str,dfsNodes)))
-print(" ".join(map(str,bfsNodes)))
-
+print()
+Q = deque([V])
+visited = [0]*(N+1)
+visited[V] = 1
+def bfs():
+    while Q:
+        current = Q.pop()
+        print(current, end=" ")
+        for g in range(N+1):
+            if visited[g] == 0 and graph[current][g]:
+                visited[g] = 1
+                Q.appendleft(g)
+bfs()
