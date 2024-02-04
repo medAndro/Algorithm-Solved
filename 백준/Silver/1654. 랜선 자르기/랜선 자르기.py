@@ -2,19 +2,20 @@ K, N = map(int, input().split())
 lans = []
 for _ in range(K):
     lans.append(int(input()))
+
 low = 0
 high = 2**31
 
 def check(val):
     if val == 0:
-        return False
+        return True
     lancount = 0
     for l in lans:
         lancount += l // val
     if N <= lancount:
-        return False
-    else:
         return True
+    else:
+        return False
 
 while low + 1 < high:
     mid = (low + high) // 2
