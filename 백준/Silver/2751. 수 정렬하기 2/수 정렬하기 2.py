@@ -1,7 +1,7 @@
 import sys
-
-n = int(input())
-l = list(map(int, sys.stdin))
-l.sort()
-for i in l:
-    print(i)
+n = int(sys.stdin.readline())
+nums = [0]*n
+for i in range(n):
+    nums[i] = int(sys.stdin.readline())
+nums.sort()
+print("\n".join(map(str, nums)))
