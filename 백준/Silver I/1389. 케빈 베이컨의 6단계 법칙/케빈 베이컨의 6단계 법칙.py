@@ -1,18 +1,13 @@
 import sys
-from collections import deque
+from collections import deque, defaultdict
 input = lambda: sys.stdin.readline().rstrip()
 N, M = map(int, input().split())
-networks = {}
+networks = defaultdict(list)
+
 for _ in range(M):
     a, b = map(int, input().split())
-    try:
-        networks[a] += [b]
-    except:
-        networks[a] = [b]
-    try:
-        networks[b] += [a]
-    except:
-        networks[b] = [a]
+    networks[a].append(b)
+    networks[b].append(a)
 
 kevin = [0]*(N+1)
 for i in range(1, N + 1):
