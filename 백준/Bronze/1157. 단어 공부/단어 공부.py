@@ -1,10 +1,11 @@
-from collections import defaultdict
-alphaDict = defaultdict(int)
-for alpha in input():
-    alphaDict[alpha.upper()] += 1
-keys = list(alphaDict.keys())
-values = list(alphaDict.values())
-if values.count(max(values)) > 1:
-    print('?')
-else:
-    print(keys[values.index(max(values))])
+words = list(input().upper())
+cnt = 0
+
+for i in set(words):
+    if cnt < words.count(i):
+        cnt = words.count(i)
+        result = i
+    elif cnt == words.count(i):
+        result = '?'
+
+print(result)
