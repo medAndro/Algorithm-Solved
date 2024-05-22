@@ -1,3 +1,4 @@
-for _ in range(int(input())):
+tc = int(input())
+for _ in range(tc):
     input()
     print(f'yes')
