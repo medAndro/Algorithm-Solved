@@ -1,0 +1,1 @@
+print(f'242\nmedandro')
