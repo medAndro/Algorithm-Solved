@@ -1,0 +1,45 @@
+import math
+
+while True:
+    numS = str(input()[2:-3])
+    if numS == '':
+        break
+    if len(numS) == 1:
+        g = math.gcd(int(numS), 9)
+        print(f'{int(int(numS) / g)}/{int(9 / g)}')
+    else:
+        aU = -1
+        aD = -1
+        if numS[-1] == '0':
+            ii = 0
+            for i, n in enumerate(reversed(numS)):
+                if n != '0':
+                    ii = -i
+                    break
+            u = int(numS[:ii])
+            d = int('1' + ('0' * len(numS[:ii])))
+            g = math.gcd(u, d)
+            aU = int(u / g)
+            aD = int(d / g)
+        if numS[-1] == '9':
+            ii = -1
+            for i, n in enumerate(reversed(numS)):
+                if n != '9':
+                    ii = -i
+                    break
+            u = int(str(int(numS[:ii]) + 1))
+            d = int('1' + ('0' * len(numS[:ii])))
+            g = math.gcd(u, d)
+            aU = int(u / g)
+            aD = int(d / g)
+
+        l = len(numS)
+        for i in range(1, l + 1):
+            # i는 순환마디의 길이 l-i는 순환마디가 아닌 자리의 길이
+            u = int(int(numS) - (0 if (l - i) == 0 else int(numS[:(l - i)])))
+            d = int('9' * i + '0' * (l - i))
+            g = math.gcd(u, d)
+            if aD == -1 or aD > int(d / g):
+                aU = int(u / g)
+                aD = int(d / g)
+        print(f'{aU}/{aD}')
