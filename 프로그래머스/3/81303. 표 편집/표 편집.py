@@ -1,31 +1,48 @@
-def solution(n, k, cmd):
-    up = [x for x in range(-1, n + 1)]
-    dn = [x for x in range(1, n + 2)]
-    k += 1
+def solution(n, k, cmds):
+    lList = {}
+    for i in range(n):
+        if i == 0:
+            lList[i] = [None, i + 1]
+        elif i == n - 1:
+            lList[i] = [i - 1, None]
+        else:
+            lList[i] = [i - 1, i + 1]
     delete = []
-    for c in cmd:
-        if c[0] == "U":
-            i = int(c[2:])
-            for _ in range(i):
-                k = up[k]
-        elif c[0] == "D":
-            i = int(c[2:])
-            for _ in range(i):
-                k = dn[k]
-        elif c[0] == "C":
+    for c in cmds:
+        if c[0] == 'U':
+            v = int(c[2:])
+            for i in range(v):
+                k = lList[k][0]
+        elif c[0] == 'D':
+            v = int(c[2:])
+            for i in range(v):
+                k = lList[k][1]
+        elif c[0] == 'C':
+            uIdx, dIdx = lList[k]
             delete.append(k)
-            up[dn[k]] = up[k]
-            dn[up[k]] = dn[k]
-            if n < dn[k]:
-                k = up[k]
+            if dIdx is None:
+                k = uIdx
+                lList[uIdx][1] = None
+            elif uIdx is None:
+                k = dIdx
+                lList[dIdx][0] = None
             else:
-                k = dn[k]
-        elif c[0] == "Z":
-            i = delete.pop()
-            up[dn[i]] = i
-            dn[up[i]] = i
+                k = dIdx
+                lList[uIdx][1] = dIdx
+                lList[dIdx][0] = uIdx
+        elif c[0] == 'Z':
+            p = delete.pop()
+            uIdx = lList[p][0]
+            dIdx = lList[p][1]
+            if uIdx is None:
+                lList[dIdx][0] = p
+            elif dIdx is None:
+                lList[uIdx][1] = p
+            else:
+                lList[uIdx][1] = p
+                lList[dIdx][0] = p
 
-    ansList = ['O'] * n
+    answer = ['O'] * n
     for d in delete:
-        ansList[d-1] = 'X'
-    return ''.join(ansList)
+        answer[d] = 'X'
+    return ''.join(answer)
