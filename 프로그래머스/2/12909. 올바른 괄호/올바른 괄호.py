@@ -1,14 +1,10 @@
-def solution(s):
-    chkLeft = 0
-    answer = True
-    for i in s:
-        if i == '(':
-            chkLeft += 1
-        elif chkLeft > 0 and i == ')':
-            chkLeft -= 1
-        else:
-            answer = False
-            break
-    if chkLeft > 0:
-        answer = False
-    return answer
+def solution(arr):
+    answer = []
+    for a in arr:
+        answer.append(a)
+        if len(answer) >= 2:
+            if answer[-2] == "(" and answer[-1] == ")":
+                answer.pop()
+                answer.pop()
+    print(answer)
+    return True if len(answer) == 0 else False
