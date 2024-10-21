@@ -1,11 +1,9 @@
 fun main() {
-    readLine()!!.toInt()
+    readLine()
     val arr = readLine()!!.split(" ").map { it.toInt() }.toTypedArray()
-    var Y = 0
-    var M = 0
+    var Y = 10 * arr.size
+    var M = 15 * arr.size
     arr.forEach {
-        Y += 10
-        M += 15
         Y += (it / 30) * 10
         M += (it / 60) * 15
 
