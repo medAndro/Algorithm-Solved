@@ -1,32 +1,25 @@
-msg = input()
-answer = []
-word = False
-tag = False
-for i, m in enumerate(msg):
-    if not tag and not word:
-        if m == '<':
-            tag = True
-        else:
-            word = True
-        answer.append(m)
-    elif tag:
-        if m == '>':
-            tag = False
-        answer[-1] += m
-    elif word:
-        if m == ' ':
-            word = False
-            answer.append(m)
-        elif m == '<':
-            word = False
-            tag = True
-            answer.append(m)
-        else:
-            answer[-1] += m
-
-for i in answer:
-    if i[0] == '<':
-        print(i, end='')
-    else:
-        print(i[::-1], end='')
-print()
+message = input()
+answerList = []
+isTag = False
+isWord = False
+startIdx = -1
+for idx, letter in enumerate(message):
+    if isTag:
+        if letter == '>':
+            isTag = False
+            answerList.append(message[startIdx:idx + 1])
+        continue
+    if letter == '<':
+        isTag = True
+        startIdx = idx
+        continue
+    if not isWord and (letter.isalpha() or letter.isdigit()):
+        isWord = True
+        startIdx = idx
+    if isWord:
+        if idx == (len(message)-1) or message[idx+1] == '<' or message[idx+1] == ' ':
+            isWord = False
+            answerList.append(message[startIdx:idx + 1][::-1])
+    if letter == ' ':
+        answerList.append(' ')
+print(''.join(answerList))
