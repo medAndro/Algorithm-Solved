@@ -1,15 +1,13 @@
-import sys
 import heapq
+import sys
+input = sys.stdin.readline
 
-N = int(sys.stdin.readline())
-heap = []
-
-for i in range(N):
-    num = int(sys.stdin.readline())
-    if num:  # num 입력
-        heapq.heappush(heap, -num)
-    else:  # 출력
-        if heap:  # 가장 큰값 출력
-            print(-heapq.heappop(heap))
-        else:
-            print(0)
+N = int(input())
+minHeap = []
+for _ in range(N):
+    x = int(input())
+    x = -x
+    if x == 0:
+        print(-heapq.heappop(minHeap) if minHeap else 0)
+    else:
+        heapq.heappush(minHeap, x)
