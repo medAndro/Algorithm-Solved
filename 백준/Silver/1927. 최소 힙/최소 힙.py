@@ -1,13 +1,12 @@
 import heapq
 import sys
-minHeap = []
+input = sys.stdin.readline
 
-for _ in range(int(input())):
-    num = int(sys.stdin.readline().strip())
-    if num==0:
-        if minHeap:
-            sys.stdout.writelines(str(heapq.heappop(minHeap))+'\n')
-        else:
-            sys.stdout.writelines('0\n')
+N = int(input())
+minHeap = []
+for _ in range(N):
+    x = int(input())
+    if x == 0:
+        print(heapq.heappop(minHeap) if minHeap else 0)
     else:
-        heapq.heappush(minHeap, num)
+        heapq.heappush(minHeap, x)
