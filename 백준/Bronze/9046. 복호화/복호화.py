@@ -1,15 +1,10 @@
 import string
 
 T = int(input())
-
 for _ in range(T):
-    text = input()
-
+    text = input().replace(' ', '')
     alphaDict = dict(zip(string.ascii_lowercase, [0]*26))
-
     for char in text:
-        if char == ' ':
-            continue
         alphaDict[char] += 1
 
     alphaList = list(zip(alphaDict.values(), alphaDict.keys()))
