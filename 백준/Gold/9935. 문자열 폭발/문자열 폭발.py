@@ -1,15 +1,15 @@
 msg = input()
 bomb = list(input())
 
-answerList = []
+answerStack = []
 for letter in msg:
-    answerList.append(letter)
-    if len(answerList) >= len(bomb):
-        if answerList[-len(bomb):] == bomb:
+    answerStack.append(letter)
+    if len(answerStack) >= len(bomb):
+        if answerStack[-len(bomb):] == bomb:
             for _ in range(len(bomb)):
-                answerList.pop()
+                answerStack.pop()
 
-if answerList:
-    print(''.join(answerList))
+if answerStack:
+    print(''.join(answerStack))
 else:
     print('FRULA')
