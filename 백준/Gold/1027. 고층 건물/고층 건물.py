@@ -9,9 +9,9 @@ for idx in range(N):
     while targetIdx < N:
         isCanSeeTarget = True
         betweenIdx = idx + 1
+        slope = (buildings[targetIdx] - buildings[idx]) / (targetIdx - idx)
+        yIntercept = buildings[idx] - slope * idx  # y = slope * x + yIntercept 에 대입하여 정리한 식
         while betweenIdx < targetIdx:
-            slope = (buildings[targetIdx] - buildings[idx]) / (targetIdx - idx)
-            yIntercept = buildings[idx] - slope * idx
             maxSeeHeight = slope * betweenIdx + yIntercept
             if buildings[betweenIdx] >= maxSeeHeight:
                 isCanSeeTarget = False
