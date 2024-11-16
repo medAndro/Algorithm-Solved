@@ -1,5 +1,3 @@
-from collections import deque
-
 MKNum = input()
 
 answerMax = ''
@@ -10,8 +8,7 @@ for MKDigit  in MKNum:
         mCount = 0
     else:
         mCount += 1
-
-answerMax += '1'*mCount
+answerMax += '1' * mCount
 
 answerMin = ''
 mCount = 0
@@ -23,7 +20,6 @@ for MKDigit  in MKNum:
         mCount = 0
     else:
         mCount += 1
-
 if mCount > 0:
     answerMin += str(1* 10**(mCount-1))
 
