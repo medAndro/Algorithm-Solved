@@ -1,12 +1,11 @@
-import bisect
-tc = int(input())
-for _ in range(tc):
+for _ in range(int(input())):
     input()
-    yj = list(set(map(int, input().split())))
-    yj.sort()
-    input()
-    for i in list(map(int, input().split())):
-        if bisect.bisect_left(yj, i) != bisect.bisect_right(yj, i):
-            print(1)
-        else:
-            print(0)
+    seenNums = set(map(int, input().split()))
+
+    answerList = [0 for _ in range(int(input()))]
+    note2Nums = map(int, input().split())
+
+    for idx, num in enumerate(note2Nums):
+        if num in seenNums:
+            answerList[idx] = 1
+    print("\n".join(map(str, answerList)))
