@@ -2,16 +2,13 @@ import sys
 limit_number = 15000
 sys.setrecursionlimit(limit_number)
 
-
 N, M = map(int, input().split())
 iceArr = list(list(map(int, input().split())) for _ in range(N))
 iceIdxArr = list([-1]*M for _ in range(N))
 reduceAmountArr = list([0]*M for _ in range(N))
 
-
 dy = [-1,1,0,0]
 dx = [0,0,-1,1]
-
 
 def fillCountArr(i, j, iceIdx):
     iceIdxArr[i][j] = iceIdx
@@ -35,8 +32,6 @@ for i in range(N):
         elif iceArr[i][j] == 0:
             iceIdxArr[i][j] = 0
 
-
-
 def fillIdxArr(i, j, arr):
     arr[i][j] = 0
     for d in range(4):
@@ -59,8 +54,6 @@ def isOverTwoIce():
 
     return fillCounter
 
-
-
 if iceIdx > 1:
     print(0)
 else:
@@ -70,13 +63,12 @@ else:
         clearIces = []
         for i in range(N):
             for j in range(M):
-                if reduceAmountArr[i][j] > 0:
-                    if iceArr[i][j] > 0:
-                        iceArr[i][j] -= reduceAmountArr[i][j]
-                        if iceArr[i][j] <= 0:
-                            iceArr[i][j] = 0
-                            iceIdxArr[i][j] = 0
-                            clearIces.append([i, j])
+                if reduceAmountArr[i][j] > 0 and iceArr[i][j] > 0:
+                    iceArr[i][j] -= reduceAmountArr[i][j]
+                    if iceArr[i][j] <= 0:
+                        iceArr[i][j] = 0
+                        iceIdxArr[i][j] = 0
+                        clearIces.append([i, j])
         for clearIce in clearIces:
             reduceAmountArr[clearIce[0]][clearIce[1]] = 0
             for d in range(4):
