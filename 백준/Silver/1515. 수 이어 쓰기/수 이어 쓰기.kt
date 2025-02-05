@@ -1,18 +1,18 @@
 fun main() {
-    val removedNums = ArrayDeque(readln().map { it.toString() })
-
+    val removedNums = readln()
+    var searchIndex = 0
     var num = 0
-    while (removedNums.isNotEmpty()) {
-        num++
-        val compareNums = num.toString()
 
-        if (removedNums[0] in compareNums) {
-            val subCompareNums = compareNums.substring(compareNums.indexOf(removedNums[0]))
-            for (c in subCompareNums) {
-                if (removedNums.isNotEmpty() && c.toString() == removedNums[0]) {
-                    removedNums.removeFirst()
-                }
+    while (searchIndex < removedNums.length) {
+        num++
+        val currentNum = num.toString()
+
+        var i = 0  // current_num의 인덱스
+        while (i < currentNum.length && searchIndex < removedNums.length) {
+            if (currentNum[i] == removedNums[searchIndex]) {
+                searchIndex++
             }
+            i++
         }
     }
 
