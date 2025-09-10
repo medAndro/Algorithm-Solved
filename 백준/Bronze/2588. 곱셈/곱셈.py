@@ -1,0 +1,7 @@
+a = int(input())
+num = input()
+b = list(map(int, str(num)))
+print(a * b[2])
+print(a * b[1])
+print(a * b[0])
+print(a * int(num))
