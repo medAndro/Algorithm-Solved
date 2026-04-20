@@ -1,46 +1,30 @@
-from collections import deque
+from itertools import chain
 
-def write_down(board, start_pos, write_count, current_num):
+def write(board, start_pos, write_count, current_num, direction):
     row = start_pos[0]
     col = start_pos[1]
-    for _ in range(write_count):
-        board[row][col] = current_num
-        current_num += 1
-        row += 1
-    return [row - 1, col + 1], current_num
+    for i in range(write_count):
+        row += direction[0]
+        col += direction[1]
 
-def write_right(board, start_pos, write_count, current_num):
-    row = start_pos[0]
-    col = start_pos[1]
-    for _ in range(write_count):
         board[row][col] = current_num
         current_num += 1
-        col += 1
-    return [row - 1, col - 2], current_num
+    return [row, col], current_num
 
-def write_up(board, start_pos, write_count, current_num):
-    row = start_pos[0]
-    col = start_pos[1]
-    for _ in range(write_count):
-        board[row][col] = current_num
-        current_num += 1
-        col -= 1
-        row -= 1
-    return [row + 2, col + 1], current_num
 
 def solution(n):
-    answer = []
-    board = [[-1] * (n + 1) for _ in range((n + 1))]
+    board = [[0] * i for i in range(1, n + 1)]
 
-    write_fnc = deque([write_down, write_right, write_up])
-    pos = [1, 1]
+    pos = [-1, 0]
     current_num = 1
+
+    dr = [1, 0, -1]
+    dc = [0, 1, -1]
+    direction_counter = 0
     for write_count in range(n, 0, -1):
-        fnc = write_fnc.popleft()
-        pos, current_num = fnc(board, pos, write_count, current_num)
-        write_fnc.append(fnc)
+        current_dr = dr[direction_counter % 3]
+        current_dc = dc[direction_counter % 3]
+        pos, current_num = write(board, pos, write_count, current_num, (current_dr, current_dc))
+        direction_counter += 1
 
-    for i in range(1, n + 1):
-        answer.extend(board[i][1:i + 1])
-
-    return answer
+    return list(chain.from_iterable(board))
