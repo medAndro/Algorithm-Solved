@@ -1,5 +1,6 @@
 from collections import deque
 
+
 def solution(s):
     stack = deque()
 
