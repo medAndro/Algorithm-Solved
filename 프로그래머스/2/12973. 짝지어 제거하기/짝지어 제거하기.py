@@ -1,16 +1,11 @@
-def solution(s):
-    answer = -1
-    stack = []
-    for i in s:
-        if len(stack) >= 1 and stack[-1] == i:
-            stack.pop()
-            continue
-        else:
-            stack.append(i)
-    else:
-        if len(stack) == 0:
-            answer = 1
-        else:
-            answer = 0
+from collections import deque
 
-    return answer
+def solution(s):
+    stack = deque()
+
+    for char in s:
+        if stack and stack[-1] == char:
+            stack.pop()
+        else:
+            stack.append(char)
+    return 0 if stack else 1
