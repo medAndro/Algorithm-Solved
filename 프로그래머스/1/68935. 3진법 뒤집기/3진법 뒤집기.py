@@ -1,19 +1,13 @@
-
-def base_10_to_reverse_3(n: int):
-    arr = []
-    while n > 0:
-        arr.append(n % 3)
-        n = n // 3
-    return arr
-
-
-def base_3_to_10(base3):
-    base10 = 0
-    base3.reverse()
-    for idx in range(len(base3)):
-        base10 += base3[idx] * 3 ** idx
-    return base10
+def base_change(num, base):
+    if num == 0:
+        return 0
+    nums = []
+    while num:
+        num, digit = divmod(num, base)
+        nums.append(str(digit))
+    return ''.join(reversed(nums))
 
 
-def solution(n):
-    return base_3_to_10(base_10_to_reverse_3(n))
+def solution(num):
+    base3 = base_change(num, 3)
+    return int(base3[::-1], 3)
