@@ -1,22 +1,11 @@
+import re
+
 def solution(new_id):
-    lower_id = list(new_id.lower())
-    new_id = []
-    for char in lower_id:
-        if not (char.isdigit() or char.isalpha() or char in "-_."):
-            continue
-        if (not new_id) or (not (new_id[-1] == '.' and char == '.')):
-            new_id.append(char)
-
-    if new_id and new_id[-1] == '.':
-        new_id = new_id[:-1]
-    if new_id and new_id[0] == '.':
-        new_id = new_id[1:]
-    if not new_id:
-        new_id.append('a')
-    new_id = new_id[:15]
-    if new_id and new_id[-1] == '.':
-        new_id = new_id[:-1]
-
-    while len(new_id) <= 2:
-        new_id.append(new_id[-1])
-    return ''.join(new_id)
+    step1 = new_id.lower()
+    step2 = re.sub(r"[^a-z0-9-_.]", "", step1)
+    step3 = re.sub(r"\.{2,}", ".", step2)
+    step4 = re.sub(r"^\.|\.$", "", step3)
+    step5 = "a" if len(step4) == 0 else step4
+    step6 = re.sub(r"\.$", "", step5[:15])
+    step7 = (step6 + step6[-1] * 2)[:3] if len(step6) <= 2 else step6
+    return step7
