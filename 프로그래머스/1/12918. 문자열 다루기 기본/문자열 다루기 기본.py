@@ -1,5 +1,5 @@
-import re
-
-
 def solution(s):
-    return bool(re.fullmatch(r"\d{4}|\d{6}", s))
+    if (len(s) == 4 or len(s) == 6) and s.isdigit():
+        return True
+    else:
+        return False
