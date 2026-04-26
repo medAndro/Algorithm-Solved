@@ -6,12 +6,10 @@ def solution(dartResult):
     sdt = {"S": 1, "D": 2, "T": 3}
     answers = []
     results = re.findall(pattern, dartResult)
-    for result in results:
-        answers.append(int(result[0]) ** sdt[result[1]])
-        if result[2] == "*":
-            answers[-1] *= 2
-            if len(answers) >= 2:
-                answers[-2] *= 2
-        elif result[2] == "#":
+    for score, bonus, option in results:
+        answers.append(int(score) ** sdt[bonus])
+        if option == "*":
+            answers[-2:] = [x * 2 for x in answers[-2:]]
+        elif option == "#":
             answers[-1] *= -1
     return sum(answers)
