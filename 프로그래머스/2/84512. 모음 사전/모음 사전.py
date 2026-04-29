@@ -1,21 +1,23 @@
-def find(data, cur_word, step):
-    # 종료 조건: 단어의 최대 길이는 5이므로 step이 6이 되면 중단
-    if step == 6:
-        return
+import sys
 
-    # 빈 문자열이 아닌 경우에만 사전에 단어 추가
-    if cur_word != '':
-        data.append(cur_word)
+sys.setrecursionlimit(10 ** 6)
 
-    # 모음 순서대로 문자열을 확장하며 재귀 호출 (사전 순서 보장)
-    for c in ['A', 'E', 'I', 'O', 'U']:
-        find(data, ''.join([cur_word, c]), step + 1)
+vowel = ["A", "E", "I", "O", "U"]
+def aeiou(idx, chars, word):
+    if len(word) == len(chars) and "".join(chars) == word:
+        return idx
+
+    if not chars:
+        return aeiou(idx + 1, ['A'], word)
+    else:
+        if len(chars) < 5:
+            return aeiou(idx + 1, chars + ['A'], word)
+        else:
+            for i in range(4, -1, -1):
+                if chars[i] != "U":
+                    return aeiou(idx + 1, chars[:i] + [vowel[vowel.index(chars[i]) + 1]], word)
+            return None
 
 
 def solution(word):
-    data = []
-    # 빈 문자열에서 시작하여 사전 생성
-    find(data, '', 0)
-
-    # 리스트에서 목표 단어의 인덱스를 찾아 1을 더해 반환
-    return data.index(word) + 1
+    return aeiou(0, [], word)
