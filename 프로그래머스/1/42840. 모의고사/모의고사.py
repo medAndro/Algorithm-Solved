@@ -1,16 +1,17 @@
-def solution(numbers):
-    answer = []
-    sol = [[1, 2, 3, 4, 5] * 2000,
-           [2, 1, 2, 3, 2, 4, 2, 5] * 1300,
-           [3, 3, 1, 1, 2, 2, 4, 4, 5, 5] * 1000]
-    cnt = [0] * 3
+def solution(answers):
+    p1 = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+    p2 = [2, 1, 2, 3, 2, 4, 2, 5, 2, 1, 2, 3, 2, 4, 2, 5]
+    p3 = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5, 3, 3, 1, 1, 2, 2, 4, 4, 5, 5]
+    users = [p1, p2, p3]
+    right_answer_cnt = [0, 0, 0]
+    for user_idx, user_answers in enumerate(users):
+        for answer_idx, answer in enumerate(answers):
+            if user_answers[answer_idx % len(user_answers)] == answer:
+                right_answer_cnt[user_idx] += 1
 
-    for i in range(len(numbers)):
-        for si, s in enumerate(sol):
-            if numbers[i] == s[i]:
-                cnt[si] += 1
-    for i, c in enumerate(cnt):
-        if c == max(cnt):
-            answer.append(i + 1)
-    answer.sort()
-    return answer
+    result = []
+    for user_idx, answer_cnt in enumerate(right_answer_cnt):
+        if answer_cnt == max(right_answer_cnt):
+            result.append(user_idx + 1)
+
+    return result
