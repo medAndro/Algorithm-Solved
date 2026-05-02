@@ -2,7 +2,7 @@ import math
 from itertools import permutations
 
 
-def get_primes(max_len):
+def get_eratosthenes(max_len):
     eratosthenes = [0, 0] + [1] * max_len
     target = int(math.sqrt(max_len)) + 1
 
@@ -12,12 +12,7 @@ def get_primes(max_len):
             while cnt * i <= len(eratosthenes) - 1:
                 eratosthenes[cnt * i] = 0
                 cnt += 1
-
-    primes = []
-    for idx, val in enumerate(eratosthenes):
-        if val == 1:
-            primes.append(idx)
-    return primes
+    return eratosthenes
 
 
 def solution(numbers):
@@ -28,8 +23,8 @@ def solution(numbers):
         for combi in permutations(numbers, l):
             nums.add(int(''.join(list(combi))))
 
-    primes = get_primes(max_numbers)
+    eratosthenes = get_eratosthenes(max_numbers)
     for num in nums:
-        if num in primes:
+        if eratosthenes[num] == 1:
             answer += 1
     return answer
