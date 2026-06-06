@@ -2,47 +2,47 @@ import re
 from itertools import permutations
 
 
-def calculator(exp_list, operator):
-    result = [exp_list[0]]
-    exp_list = exp_list[1:]
-    is_skip = False
-    for idx, c in enumerate(exp_list):
-        if type(c) == int and is_skip == False:
-            result.append(c)
-        elif type(c) == int and is_skip == True:
-            is_skip = False
-        else:
-            if c == operator:
-                if operator == "+":
-                    result[-1] = result[-1] + exp_list[idx + 1]
-                if operator == "-":
-                    result[-1] = result[-1] - exp_list[idx + 1]
-                if operator == "*":
-                    result[-1] = result[-1] * exp_list[idx + 1]
-                is_skip = True
+def apply_operator(tokens, op):
+    result = []
+    i = 0
+
+    while i < len(tokens):
+        if tokens[i] == op:
+            left = result.pop()
+            right = tokens[i + 1]
+
+            if op == '+':
+                result.append(left + right)
+            elif op == '-':
+                result.append(left - right)
             else:
-                result.append(c)
+                result.append(left * right)
+
+            i += 2
+        else:
+            result.append(tokens[i])
+            i += 1
 
     return result
 
 
 def solution(expression):
-    answer = 0
-    reg = re.compile(r"\d")
-    exp_list = list()
-    start_idx = 0
-    for idx, c in enumerate(expression + "!"):
-        if not reg.match(c):
-            exp_list.append(int(expression[start_idx:idx]))
-            start_idx = idx + 1
-            if c != "!":
-                exp_list.append(c)
+    raw_tokens = re.findall(r'\d+|[+\-*]', expression)
 
-    combis = permutations(['+', '-', '*'], 3)
-    for combi in combis:
-        first = calculator(exp_list, combi[0])
-        second = calculator(first, combi[1])
-        third = calculator(second, combi[2])
-        answer = max(answer, abs(third[0]))
+    tokens = []
+    for token in raw_tokens:
+        if token.isdigit():
+            tokens.append(int(token))
+        else:
+            tokens.append(token)
+
+    answer = 0
+    for priority in permutations(['+', '-', '*']):
+        temp = tokens[:]
+
+        for op in priority:
+            temp = apply_operator(temp, op)
+
+        answer = max(answer, abs(temp[0]))
 
     return answer
