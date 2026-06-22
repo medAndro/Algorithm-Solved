@@ -1,32 +1,27 @@
 def solution(distance, rocks, remove_num):
     rocks.sort()
-
-    left_distance = 1
-    right_distance = distance + 1
-    mid_distance = distance // 2
-
+    left = 1
+    right = distance + 1
     answer = 0
-
-    while left_distance < right_distance:
+    while left < right:
+        x = (left + right) // 2
         prev_rock = 0
-        removed_rock = 0
-        for i in range(len(rocks)):
-            if (rocks[i] - prev_rock) < mid_distance:
-                removed_rock += 1
+        remove_rock = 0
+        for rock in rocks:
+            if (rock - prev_rock) < x:
+                remove_rock += 1
             else:
-                prev_rock = rocks[i]
-            if removed_rock > remove_num:
+                prev_rock = rock
+            if remove_rock > remove_num:
                 break
 
-        if distance - prev_rock < mid_distance:
-            removed_rock += 1
+        if (distance - prev_rock) < x:
+            remove_rock += 1
 
-        if removed_rock <= remove_num:
-            answer = max(answer, mid_distance)
-            left_distance = mid_distance + 1
+        if remove_rock <= remove_num:
+            answer = max(answer, x)
+            left = x + 1
         else:
-            right_distance = mid_distance
-
-        mid_distance = (right_distance + left_distance) // 2
+            right = x
 
     return answer
