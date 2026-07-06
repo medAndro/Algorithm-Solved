@@ -1,0 +1,31 @@
+T = int(input())
+for test_case in range(1, T + 1):
+    n = int(input())
+    arr = list()
+    for _ in range(n):
+        arr.append(list(map(int, input().split())))
+
+    d90 = list()
+    for i in range(n):
+        line = list()
+        for j in range(n - 1, -1, -1):
+            line.append(arr[j][i])
+        d90.append(line)
+
+    d180 = list()
+    for i in range(n - 1, -1, -1):
+        line = list()
+        for j in range(n - 1, -1, -1):
+            line.append(arr[i][j])
+        d180.append(line)
+
+    d270 = list()
+    for i in range(n - 1, -1, -1):
+        line = list()
+        for j in range(n):
+            line.append(arr[j][i])
+        d270.append(line)
+
+    print(f"#{test_case}")
+    for i in range(n):
+        print(''.join(map(str, d90[i])) + " " + ''.join(map(str, d180[i])) + " " + ''.join(map(str, d270[i])))
