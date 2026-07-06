@@ -1,0 +1,19 @@
+T = int(input())
+for test_case in range(1, T + 1):
+    input()
+    ai = list(map(int, input().split()))
+    bj = list(map(int, input().split()))
+    short = bj if len(ai) > len(bj) else ai
+    long = bj if len(ai) < len(bj) else ai
+    gap = len(long) - len(short)
+    answer = None
+
+    for g in range(gap + 1):
+        temp = 0
+        for i in range(len(short)):
+            temp += short[i] * long[i + g]
+        if answer is None:
+            answer = temp
+        else:
+            answer = max(answer, temp)
+    print(f"#{test_case} {answer}")
