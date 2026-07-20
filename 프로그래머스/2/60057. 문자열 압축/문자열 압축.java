@@ -5,7 +5,7 @@ class Solution {
 		int answer = s.length();
 		int len = s.length();
 
-		for (int i = 1; i <= (int) len / 2; i++) {
+		for (int i = 1; i <= len / 2; i++) {
 			ArrayList<String> split = new ArrayList<>();
 
 			int idx = 0;
@@ -14,7 +14,7 @@ class Solution {
 				idx += i;
 			}
 
-			ArrayList<Integer> compressedLen = new ArrayList<>();
+			ArrayList<Integer> compresseCounts = new ArrayList<>();
 			int compressedCnt = 0;
 			for (int j = 0; j < split.size(); j++) {
 				if (j != 0) {
@@ -22,7 +22,7 @@ class Solution {
 						compressedCnt++;
 					} else {
 						if (compressedCnt > 0) {
-							compressedLen.add(++compressedCnt);
+							compresseCounts.add(++compressedCnt);
 							compressedCnt = 0;
 						}
 
@@ -30,13 +30,13 @@ class Solution {
 				}
 			}
 			if (compressedCnt > 0) {
-				compressedLen.add(++compressedCnt);
+				compresseCounts.add(++compressedCnt);
 				compressedCnt = 0;
 			}
 
 			int compressedLength = s.length();
 
-			for (int comp : compressedLen) {
+			for (int comp : compresseCounts) {
 				compressedLength -= (i * comp);
 				compressedLength += (Integer.toString(comp).length() + i);
 			}
