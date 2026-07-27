@@ -4,6 +4,8 @@ class Solution {
 	public int solution(int[][] maps) {
 		int m = maps[0].length;
 		int n = maps.length;
+		if (m == 1 && n == 1)
+			return 1;
 
 		int answer = -1;
 		ArrayDeque<int[]> queue = new ArrayDeque<>();
@@ -26,9 +28,7 @@ class Solution {
 				if (yy >= 0 && xx >= 0 && yy < n && xx < m) {
 					if (dist[yy][xx] == 0 && maps[yy][xx] == 1) {
 						if (yy == n - 1 && xx == m - 1) {
-							queue.clear();
-							answer = len + 1;
-							break;
+							return len + 1;
 						} else {
 							queue.offerLast(new int[] { yy, xx });
 							dist[yy][xx] = len + 1;
