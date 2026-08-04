@@ -1,86 +1,81 @@
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.stream.Collector;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 class Solution {
-	int n;
-	int r;
-	int[] dist;
-	int[] weak;
-	int answer = -1;
-
 	public int solution(int n, int[] weak, int[] dist) {
-		this.n = n;
 		dist = Arrays.stream(dist).map(i -> -i).sorted().map(i -> -i).toArray();
-		this.dist = dist;
-		this.weak = weak;
 
-		for (this.r = 1; this.r <= dist.length; this.r++) {
-			int[] result = new int[r];
-			boolean[] used = new boolean[dist.length];
-			perm(0, result, used);
-
+		int[] weakDist = new int[weak.length];
+		for (int i = 0; i < weak.length - 1; i++) {
+			weakDist[i] = weak[(i + 1) % weak.length] - weak[i];
 		}
-		return answer;
-	}
+		weakDist[weak.length - 1] = n - weak[weak.length - 1] + weak[0];
 
-	void perm(int depth, int[] result, boolean[] used) {
-		if (depth == r) {
-			if (isCoverWeak(result)) {
-				answer = r;
+		int max = 0;
+		int maxIdx = 0;
+
+		for (int i = 0; i < weakDist.length; i++) {
+			if (weakDist[i] > max) {
+				maxIdx = i;
+				max = weakDist[i];
+
 			}
-			return;
 		}
 
-		for (int i = 0; i < dist.length && answer == -1; i++) {
-			if (used[i])
-				continue;
+		int[] flatWeakDist = new int[weak.length - 1];
 
-			used[i] = true;
-			result[depth] = dist[i];
-			perm(depth + 1, result, used);
-			used[i] = false;
+		int nextIdx = 0;
+		for (int i = maxIdx + 1, idx = 0; i < weak.length; i++, idx++) {
+			flatWeakDist[idx] = weakDist[i];
+			nextIdx++;
 		}
 
-	}
+		for (int i = 0, idx = nextIdx; i < maxIdx; i++, idx++) {
+			flatWeakDist[idx] = weakDist[i];
+		}
 
-	boolean isCoverWeak(int[] partDist) {
-		int[] weakGap = new int[weak.length];
-		for (int sp = 0; sp < this.weak.length; sp++) {
-			int first = 0;
-			for (int i = 0; i < this.weak.length; i++) {
-				if (i == 0) {
-					first = weak[(sp + i) % this.weak.length];
-				}
-				weakGap[i] = weak[(sp + i) % this.weak.length] - first;
+		int answer = 1;
 
-				if (weakGap[i] < 0) {
-					weakGap[i] += n;
-				}
-			}
-
-			for (int i = this.weak.length - 1; i >= 1; i--) {
-				weakGap[i] -= weakGap[i - 1];
-			}
-
+		while (true) {
+			List<Integer> weaks = new ArrayList<>();
 			int sum = 0;
-			int partDistIdx = 0;
-			boolean ispossible = true;
-			for (int gapIdx = 0; gapIdx < weakGap.length; gapIdx++) {
-				sum += weakGap[gapIdx];
-				if (partDist[partDistIdx] < sum) {
+			for (int f : flatWeakDist) {
+				if (f == 0 && sum > 0) {
+					weaks.add(sum);
 					sum = 0;
-					partDistIdx++;
-					if (partDist.length == partDistIdx) {
-						ispossible = false;
-						break;
+				} else {
+					sum += f;
+				}
+			}
+			weaks.add(sum);
+			weaks.sort((i, j) -> Integer.compare(j, i));
+
+			boolean isFail = false;
+			for (int i = 0; i < weaks.size(); i++) {
+				if (weaks.get(i) > dist[i]) {
+					isFail = true;
+					break;
+				}
+			}
+			if (isFail) {
+				int nextRemoveIdx = 0;
+				int weakMax = 0;
+				for (int i = 0; i < flatWeakDist.length; i++) {
+					if (flatWeakDist[i] > weakMax) {
+						weakMax = flatWeakDist[i];
+						nextRemoveIdx = i;
 					}
 				}
-			}
-			if (ispossible) {
-				return true;
+				flatWeakDist[nextRemoveIdx] = 0;
+				answer++;
+
+			} else {
+				break;
 			}
 		}
-		return false;
+
+		return answer;
 	}
 }
