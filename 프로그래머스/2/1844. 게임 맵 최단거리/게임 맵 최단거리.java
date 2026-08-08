@@ -1,6 +1,5 @@
 import java.util.*;
-import java.util.Map.Entry;
-import java.util.stream.Collector;
+
 
 class Solution {
 	public int solution(int[][] maps) {
@@ -11,7 +10,7 @@ class Solution {
 
 		int[] dr = { -1, 1, 0, 0 };
 		int[] dc = { 0, 0, -1, 1 };
-		while (!queue.isEmpty() && dist[maps.length - 1][maps[0].length - 1] == 0) {
+		while (!queue.isEmpty()) {
 			int[] polled = queue.poll();
 			int r = polled[0];
 			int c = polled[1];
@@ -21,6 +20,9 @@ class Solution {
 				int cc = c + dc[i];
 				if (rr >= 0 && cc >= 0 && rr < maps.length && cc < maps[0].length && maps[rr][cc] == 1
 						&& dist[rr][cc] == 0) {
+					if (rr == maps.length - 1 && cc == maps[0].length - 1) {
+						return dist[r][c] + 1;
+					}
 					dist[rr][cc] = dist[r][c] + 1;
 					queue.offer(new int[] { rr, cc });
 				}
@@ -28,6 +30,6 @@ class Solution {
 		}
 		int answer = dist[maps.length - 1][maps[0].length - 1];
 		answer = (answer == 0) ? -1 : answer;
-		return answer;
+		return -1;
 	}
 }
