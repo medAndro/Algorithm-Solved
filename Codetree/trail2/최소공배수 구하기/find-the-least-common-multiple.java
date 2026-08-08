@@ -4,16 +4,19 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int lcm(int n, int m) {
-        int cnt = 1;
-        int max = Math.max(n, m);
-        int min = Math.min(n, m);
-        while (true) {
-            if ((max * cnt) % min == 0) {
-                return max * cnt;
-            }
-            cnt++;
+    // 유클리드 호제법을 이용한 최대공약수(GCD) 계산
+    static long gcd(long a, long b) {
+        while (b != 0) {
+            long r = a % b;
+            a = b;
+            b = r;
         }
+        return a;
+    }
+
+    // GCD를 활용한 최소공배수(LCM) 계산
+    static long lcm(long a, long b) {
+        return (a / gcd(a, b)) * b;
     }
 
     public static void main(String[] args) throws IOException {
