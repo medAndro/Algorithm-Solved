@@ -1,43 +1,33 @@
 import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collector;
 
 class Solution {
 	public int solution(int[][] maps) {
-		int m = maps[0].length;
-		int n = maps.length;
-		if (m == 1 && n == 1)
-			return 1;
-
-		int answer = -1;
-		ArrayDeque<int[]> queue = new ArrayDeque<>();
-		queue.offerFirst(new int[] { 0, 0 });
-
-		int[][] dist = new int[n][m];
+		int[][] dist = new int[maps.length][maps[0].length];
 		dist[0][0] = 1;
+		ArrayDeque<int[]> queue = new ArrayDeque<>();
+		queue.offer(new int[] { 0, 0 });
 
-		int[] dy = { -1, 0, 0, 1 };
-		int[] dx = { 0, -1, 1, 0 };
-
-		while (!queue.isEmpty() && dist[n - 1][m - 1] == 0) {
-			int[] q = queue.pollFirst();
-			int len = dist[q[0]][q[1]];
+		int[] dr = { -1, 1, 0, 0 };
+		int[] dc = { 0, 0, -1, 1 };
+		while (!queue.isEmpty() && dist[maps.length - 1][maps[0].length - 1] == 0) {
+			int[] polled = queue.poll();
+			int r = polled[0];
+			int c = polled[1];
 
 			for (int i = 0; i < 4; i++) {
-				int yy = dy[i] + q[0];
-				int xx = dx[i] + q[1];
-
-				if (yy >= 0 && xx >= 0 && yy < n && xx < m) {
-					if (dist[yy][xx] == 0 && maps[yy][xx] == 1) {
-						if (yy == n - 1 && xx == m - 1) {
-							return len + 1;
-						} else {
-							queue.offerLast(new int[] { yy, xx });
-							dist[yy][xx] = len + 1;
-						}
-					}
+				int rr = r + dr[i];
+				int cc = c + dc[i];
+				if (rr >= 0 && cc >= 0 && rr < maps.length && cc < maps[0].length && maps[rr][cc] == 1
+						&& dist[rr][cc] == 0) {
+					dist[rr][cc] = dist[r][c] + 1;
+					queue.offer(new int[] { rr, cc });
 				}
 			}
 		}
-
+		int answer = dist[maps.length - 1][maps[0].length - 1];
+		answer = (answer == 0) ? -1 : answer;
 		return answer;
 	}
 }
