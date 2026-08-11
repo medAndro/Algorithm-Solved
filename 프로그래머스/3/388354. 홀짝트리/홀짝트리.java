@@ -32,21 +32,17 @@ class Solution {
 			if (visited[rootNode] == 1) {
 				continue;
 			}
-			List<Integer> test = new ArrayList<>();
 
 			// 각 노드가 루트가 아닐떄의 역홀짝노드수, 홀짝노드수 배열
 			int[] oddevenCnt = new int[2];
 			oddevenCnt[isOddEvenNode[rootNode]]++;
 			visited[rootNode] = 1;
-			test.add(rootNode);
 
 			ArrayDeque<int[]> deque = new ArrayDeque<>();
 			for (int childNode : nodeMapList.get(rootNode)) {
 				deque.offer(new int[] { childNode, rootNode });
 				oddevenCnt[isOddEvenNode[childNode]]++;
 				visited[childNode] = 1;
-				test.add(childNode);
-
 			}
 
 			while (!deque.isEmpty()) {
@@ -56,7 +52,6 @@ class Solution {
 						deque.offer(new int[] { childNode, pollNode[0] });
 						oddevenCnt[isOddEvenNode[childNode]]++;
 						visited[childNode] = 1;
-						test.add(childNode);
 					}
 				}
 
