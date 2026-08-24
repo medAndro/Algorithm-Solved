@@ -4,9 +4,7 @@ class Solution {
 	char[][] storageChar;
 	int rowN;
 	int colN;
-	final char WALL = '#';
-	final char ISOLATE = '%';
-	final char TEMP_CHK = '@';
+	final char CHK = '@';
 
 	int[] dr = { 0, 0, 1, -1 };
 	int[] dc = { 1, -1, 0, 0 };
@@ -28,21 +26,11 @@ class Solution {
 			case 1: // 지게차
 
 				ArrayDeque<int[]> queue = new ArrayDeque<int[]>();
-				for (int r = 0; r < storage.length; r++) {
-					for (int c = 0; c < storage[0].length(); c++) {
+				for (int r = 0; r < rowN; r++) {
+					for (int c = 0; c < colN; c++) {
 						if (storageChar[r][c] == reqAlpha) {
-							for (int dIdx = 0; dIdx < 4; dIdx++) {
-								int nr = r + dr[dIdx];
-								int nc = c + dc[dIdx];
-								if (nr < 0 || nc < 0 || nr >= rowN || nc >= colN) {
-									queue.offer(new int[] { r, c });
-									break;
-								} else if (!Character.isAlphabetic(storageChar[nr][nc])) {
-									if (isWallByBFS(nr, nc)) {
-										queue.offer(new int[] { r, c });
-										break;
-									}
-								}
+							if (isWallByBFS(r, c)) {
+								queue.offer(new int[] { r, c });
 							}
 						}
 					}
@@ -50,14 +38,14 @@ class Solution {
 
 				while (!queue.isEmpty()) {
 					int[] poll = queue.poll();
-					storageChar[poll[0]][poll[1]] = TEMP_CHK;
+					storageChar[poll[0]][poll[1]] = CHK;
 				}
 				break;
 			case 2: // 크레인
 				for (int r = 0; r < storage.length; r++) {
 					for (int c = 0; c < storage[0].length(); c++) {
 						if (storageChar[r][c] == reqAlpha) {
-							storageChar[r][c] = TEMP_CHK;
+							storageChar[r][c] = CHK;
 						}
 					}
 				}
