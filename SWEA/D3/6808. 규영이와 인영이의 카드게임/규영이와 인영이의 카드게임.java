@@ -35,10 +35,7 @@ class Solution {
 				innyoung[idx++] = i;
 			}
 
-			int[] picked = new int[9];
-			boolean[] visited = new boolean[9];
-
-			permute(picked, visited, 0);
+			permute(0);
 
 			sb.append("#").append(test_case).append(" ").append(kyuYoungWinCase).append(" ").append(kyuYoungLoseCase)
 					.append("\n");
@@ -46,16 +43,16 @@ class Solution {
 		System.out.println(sb.toString());
 	}
 
-	public static void permute(int[] picked, boolean[] visited, int depth) {
+	public static void permute(int depth) {
 		if (depth == 9) {
 			int kyuYoungSum = 0;
 			int innyoungSum = 0;
 
 			for (int i = 0; i < 9; i++) {
-				if (kyuYoung[i] > picked[i]) {
-					kyuYoungSum += kyuYoung[i] + picked[i];
+				if (kyuYoung[i] > innyoung[i]) {
+					kyuYoungSum += kyuYoung[i] + innyoung[i];
 				} else {
-					innyoungSum += kyuYoung[i] + picked[i];
+					innyoungSum += kyuYoung[i] + innyoung[i];
 				}
 			}
 
@@ -66,13 +63,17 @@ class Solution {
 			}
 			return;
 		}
-		for (int i = 0; i < 9; i++) {
-			if (!visited[i]) {
-				visited[i] = true;
-				picked[depth] = innyoung[i];
-				permute(picked, visited, depth + 1);
-				visited[i] = false;
-			}
+		for (int i = depth; i < 9; i++) {
+			swap(innyoung, depth, i);
+			permute(depth + 1);
+			swap(innyoung, i, depth);
 		}
+	}
+
+	public static void swap(int[] arr, int idxFrom, int idxTo) {
+		int to = arr[idxTo];
+		arr[idxTo] = arr[idxFrom];
+		arr[idxFrom] = to;
+
 	}
 }
