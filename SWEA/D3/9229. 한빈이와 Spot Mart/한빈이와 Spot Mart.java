@@ -21,26 +21,21 @@ class Solution {
 				snacks[snackIdx] = Integer.parseInt(tk.nextToken());
 			}
 			Arrays.sort(snacks);
-			int answer = -1;
+
 			int leftIdx = 0;
 			int rightIdx = snackLen - 1;
 			int maxSum = -1;
-
 			while (leftIdx < rightIdx) {
 				int localSum = snacks[leftIdx] + snacks[rightIdx];
 				if (maxAmount < localSum) {
 					rightIdx--;
 				} else {
 					maxSum = Math.max(maxSum, localSum);
-					leftIdx += 1;
+					leftIdx++;
 				}
 			}
 
-			if (maxSum > 0 && maxSum <= maxAmount) {
-				answer = maxSum;
-			}
-
-			sb.append("#").append(test_case).append(" ").append(answer).append("\n");
+			sb.append("#").append(test_case).append(" ").append(maxSum).append("\n");
 		}
 		System.out.println(sb.toString());
 	}
