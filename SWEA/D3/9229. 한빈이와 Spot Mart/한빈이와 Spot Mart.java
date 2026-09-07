@@ -30,7 +30,6 @@ class Solution {
 				int localSum = snacks[leftIdx] + snacks[rightIdx];
 				if (maxAmount < localSum) {
 					rightIdx--;
-					leftIdx = 0;
 				} else {
 					maxSum = Math.max(maxSum, localSum);
 					leftIdx += 1;
