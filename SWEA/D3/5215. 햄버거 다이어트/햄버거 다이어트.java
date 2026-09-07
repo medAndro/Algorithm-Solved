@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-//조합 완탐 풀이
+//조합 DFS 풀이
 class Solution {
 	public static class 재료정보 {
 		int 맛_점수;
@@ -20,7 +20,6 @@ class Solution {
 	static int 재료의_수;
 	static int 제한_칼로리;
 	static 재료정보[] 재료들;
-	static int[] selected = new int[20];
 
 	public static void main(String args[]) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -43,34 +42,28 @@ class Solution {
 				재료들[idx] = new 재료정보(맛_점수, 칼로리);
 			}
 
-			for (int r = 1; r <= 재료의_수; r++) {
-				combi(r, 0, 0);
-			}
+			combi(0, 0, 0);
 
 			sb.append("#").append(test_case).append(" ").append(answer).append("\n");
 		}
 		System.out.println(sb.toString());
 	}
 
-	// 모든 재료중 r개 재료의 조합(nCr)을 구하여 answer에 최대 칼로리 갱신하는 함수
-	static void combi(int r, int depth, int start) {
-		if (depth == r) {
-			int 칼로리합 = 0;
-			int 점수합 = 0;
-			for (int i = 0; i < r; i++) {
-				점수합 += 재료들[selected[i]].맛_점수;
-				칼로리합 += 재료들[selected[i]].칼로리;
-				if (칼로리합 > 제한_칼로리) {
-					return;
-				}
-			}
-			answer = Math.max(answer, 점수합);
+	// 조합 DFS: 매개변수로 누적 값들을 들고 이동
+	static void combi(int start, int currentScore, int currentCal) {
+		// 1. 가지치기: 칼로리가 제한을 넘으면 즉시 중단
+		if (currentCal > 제한_칼로리) {
 			return;
 		}
 
+		// 2. 유효한 조합의 경우 정답 갱신
+		if (currentScore > answer) {
+			answer = currentScore;
+		}
+
+		// 3. 다음 재료를 하나씩 선택하며 재귀 호출
 		for (int i = start; i < 재료의_수; i++) {
-			selected[depth] = i;
-			combi(r, depth + 1, i + 1);
+			combi(i + 1, currentScore + 재료들[i].맛_점수, currentCal + 재료들[i].칼로리);
 		}
 	}
 }
