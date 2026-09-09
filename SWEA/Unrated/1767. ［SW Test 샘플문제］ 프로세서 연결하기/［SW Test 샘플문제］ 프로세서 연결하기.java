@@ -123,9 +123,13 @@ class Solution {
 				for (int c = 0; c < N; c++) {
 					if (line.charAt(c * 2) == '1') {
 						coreMap[r][c] = new Core(r, c);
-						cores.add(coreMap[r][c]);
+
 						isChipsetInRow[r] = true;
 						isChipsetInCol[c] = true;
+
+						if (r != 0 && c != 0) {
+							cores.add(coreMap[r][c]);
+						}
 					}
 				}
 			}
@@ -164,6 +168,11 @@ class Solution {
 			} else if (answerCoreCnt == connectedCount && answerWireLen > totalWireLength) {
 				answerWireLen = totalWireLength;
 			}
+			return;
+		}
+
+		// 남은 코어를 모두 연결해도 현재 최대 연결 수에 못 미치면 가지치기
+		if (connectedCount + (coresLen - index) < answerCoreCnt) {
 			return;
 		}
 
