@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 class Solution {
@@ -12,7 +10,6 @@ class Solution {
 	static int brN; // bestCosts의 Row의 길이
 
 	public static void main(String args[]) throws Exception {
-
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 		int T = Integer.parseInt(br.readLine());
@@ -20,14 +17,13 @@ class Solution {
 			StringTokenizer tk = new StringTokenizer(br.readLine());
 			N = Integer.parseInt(tk.nextToken());
 			M = Integer.parseInt(tk.nextToken());
-			sortedM = new int[M];
+			partM = new int[M];
 
 			C = Integer.parseInt(tk.nextToken());
 			bags = new int[C + 1];
 			honeyPots = new int[N][N];
 			brN = N - M + 1;
 			bestCosts = new int[N][brN];
-			costMemo = new HashMap<>();
 
 			for (int r = 0; r < N; r++) {
 				tk = new StringTokenizer(br.readLine());
@@ -38,7 +34,7 @@ class Solution {
 
 			for (int r = 0; r < N; r++) {
 				for (int c = 0; c < brN; c++) {
-					bestCosts[r][c] = getCost(r, c);
+					bestCosts[r][c] = getCostByKnapsack(r, c);
 				}
 			}
 
@@ -58,39 +54,24 @@ class Solution {
 
 				}
 			}
-
 			sb.append("#" + test_case + " " + answer + "\n");
 		}
 		System.out.println(sb.toString());
 	}
 
 	static int[] bags;
-	static int[] sortedM; // M개의 벌통의 일부분을 추출해서 정렬
-	static Map<String, Integer> costMemo;
+	static int[] partM; // M개의 벌통의 일부분을 추출
 
 //	honeyPots[r][c] 부터  M개의 벌통을 조사해서 최대 판매가반환
-	static int getCost(int r, int c) {
+	static int getCostByKnapsack(int r, int c) {
 		Arrays.fill(bags, 0);
 
-		int idx = 0;
 		for (int cc = c; cc < c + M; cc++) {
-			sortedM[idx++] = honeyPots[r][cc];
-		}
-		Arrays.sort(sortedM);
-		String key = Arrays.toString(sortedM);
-
-		return costMemo.computeIfAbsent(key, k -> knapsack());
-	}
-
-	static int knapsack() {
-		Arrays.fill(bags, 0);
-
-		for (int i = M - 1; i >= 0; i--) {
-			int hVal = sortedM[i];
-			for (int c = C; c >= hVal; c--) {
-				int bagVal = bags[c - hVal] + (hVal * hVal);
-				if (bagVal > bags[c]) {
-					bags[c] = bagVal;
+			int hVal = honeyPots[r][cc];
+			for (int cIdx = C; cIdx >= hVal; cIdx--) {
+				int bagVal = bags[cIdx - hVal] + (hVal * hVal);
+				if (bagVal > bags[cIdx]) {
+					bags[cIdx] = bagVal;
 				}
 			}
 		}
