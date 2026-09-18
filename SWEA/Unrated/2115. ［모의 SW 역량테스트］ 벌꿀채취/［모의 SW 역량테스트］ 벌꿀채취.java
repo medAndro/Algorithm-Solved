@@ -17,7 +17,6 @@ class Solution {
 			StringTokenizer tk = new StringTokenizer(br.readLine());
 			N = Integer.parseInt(tk.nextToken());
 			M = Integer.parseInt(tk.nextToken());
-			partM = new int[M];
 
 			C = Integer.parseInt(tk.nextToken());
 			bags = new int[C + 1];
@@ -60,7 +59,6 @@ class Solution {
 	}
 
 	static int[] bags;
-	static int[] partM; // M개의 벌통의 일부분을 추출
 
 //	honeyPots[r][c] 부터  M개의 벌통을 조사해서 최대 판매가반환
 	static int getCostByKnapsack(int r, int c) {
