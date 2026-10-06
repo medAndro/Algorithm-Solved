@@ -1,3 +1,4 @@
+//Kruskal 풀이
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -6,7 +7,7 @@ import java.util.StringTokenizer;
 
 class Edge {
 	int i, j;
-	double len;
+	double dist;
 
 	public Edge(int i, int j, double[][] islands) {
 		super();
@@ -15,10 +16,8 @@ class Edge {
 
 		double x = islands[i][0] - islands[j][0];
 		double y = islands[i][1] - islands[j][1];
-		len = Math.hypot(x, y);
-
+		dist = x * x + y * y;
 	}
-
 }
 
 class Solution {
@@ -50,15 +49,15 @@ class Solution {
 			edges = new ArrayList<Edge>();
 
 			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < N; j++) {
-					if (find(i) == find(j)) {
+				for (int j = i + 1; j < N; j++) {
+					if (i == j) {
 						continue;
 					}
 					edges.add(new Edge(i, j, islands));
 				}
 			}
 
-			edges.sort((e1, e2) -> Double.compare(e1.len, e2.len));
+			edges.sort((e1, e2) -> Double.compare(e1.dist, e2.dist));
 
 			int cnt = 0;
 
@@ -69,8 +68,9 @@ class Solution {
 				if (find(e.i) == find(e.j)) {
 					continue;
 				}
+				cnt++;
 				union(e.i, e.j);
-				answer += cost * e.len * e.len;
+				answer += cost * e.dist;
 
 			}
 			sb.append("#" + test_case + " " + Math.round(answer) + "\n");
