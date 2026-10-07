@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 // BFS + DP 풀이
@@ -43,13 +42,11 @@ class Solution {
 		System.out.println(sb.toString());
 	}
 
-	public static int bfs() {
-		int[] dist = new int[N + 2];
+	public static void bfs() {
 		int dp[][] = new int[N][(int) Math.pow(2, N)];
 		for (int i = 0; i < N; i++) {
 			Arrays.fill(dp[i], INF);
 		}
-		Arrays.fill(dist, INF);
 		int fullVisitMask = (int) Math.pow(2, N) - 1;
 
 		// {노드인덱스, 시작점부터의 거리, 방문한 고객 비트마스킹}
@@ -81,8 +78,6 @@ class Solution {
 				}
 			}
 		}
-
-		return -1;
 	}
 
 	public static int getManhatanDist(int[] p1, int[] p2) {
