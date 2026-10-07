@@ -40,6 +40,7 @@ class Solution {
 
 	public static int dijkstra() {
 		int dist[][] = new int[N][N];
+		dist[0][0] = 0;
 		for (int r = 0; r < N; r++) {
 			Arrays.fill(dist[r], INF);
 		}
@@ -72,10 +73,8 @@ class Solution {
 				int nDist = pDist + Area[nR][nC];
 
 				if (dist[nR][nC] > nDist) {
-
 					dist[nR][nC] = nDist;
 					pq.offer(new int[] { nR, nC, nDist });
-
 				}
 			}
 		}
