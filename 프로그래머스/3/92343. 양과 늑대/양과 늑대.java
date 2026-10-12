@@ -1,8 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 class Solution {
 	static List<Integer> graph[];
@@ -37,11 +35,10 @@ class Solution {
 	}
 
 	static void findAns() {
-		Set<Integer> seen = new HashSet<>();
 		ArrayDeque<int[]> dq = new ArrayDeque<>();
 		// 현재까지의 양+늑대 합, 노드 방문 비트, 양 마릿수
 		dq.offer(new int[] { 1, 0b1, 1 });
-		seen.add(0b1);
+
 		while (!dq.isEmpty()) {
 			int[] poll = dq.poll();
 			int pVal = poll[0];
@@ -70,11 +67,6 @@ class Solution {
 						}
 
 						answer = Math.max(answer, nCnt);
-						if (seen.contains(nVisit)) {
-							continue;
-						}
-
-						seen.add(nVisit);
 						dq.offer(new int[] { nVal, nVisit, nCnt });
 					}
 				}
