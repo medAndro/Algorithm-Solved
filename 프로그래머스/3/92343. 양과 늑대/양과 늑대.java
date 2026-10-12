@@ -37,7 +37,7 @@ class Solution {
 	static void findAns() {
 		ArrayDeque<int[]> dq = new ArrayDeque<>();
 		// 현재까지의 양+늑대 합, 노드 방문 비트, 양 마릿수
-		dq.offer(new int[] { 1, 0b1, 1, 1 });
+		dq.offer(new int[] { 1, 0b1, 1 });
 
 		while (!dq.isEmpty()) {
 			int[] poll = dq.poll();
