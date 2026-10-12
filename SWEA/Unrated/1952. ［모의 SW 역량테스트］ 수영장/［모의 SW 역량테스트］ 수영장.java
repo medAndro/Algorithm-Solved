@@ -3,50 +3,35 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 class Solution {
-	static int answer;
-	static int day, month, threeMonth;
-	static int[] plan = new int[12];
+	static int[] Memo;
+	static int day, month, triple, year;
 
 	public static void main(String args[]) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int T = Integer.parseInt(br.readLine()); // 테케수
 		StringBuilder sb = new StringBuilder();
-
+		int T = Integer.parseInt(br.readLine());
 		for (int test_case = 1; test_case <= T; test_case++) {
 			StringTokenizer tk = new StringTokenizer(br.readLine());
-
 			day = Integer.parseInt(tk.nextToken());
 			month = Integer.parseInt(tk.nextToken());
-			threeMonth = Integer.parseInt(tk.nextToken());
-			answer = Integer.parseInt(tk.nextToken()); // 정답은 1년 이용권보다 비싸질 수 없음
+			triple = Integer.parseInt(tk.nextToken());
+			year = Integer.parseInt(tk.nextToken());
+			Memo = new int[13];
 
 			tk = new StringTokenizer(br.readLine());
-			for (int i = 0; i < 12; i++) {
-				plan[i] = Integer.parseInt(tk.nextToken());
+			for (int i = 1; i <= 12; i++) {
+				int plan = Integer.parseInt(tk.nextToken());
+				Memo[i] = Memo[i - 1] + Math.min(plan * day, month);
+				int safeIdx = i - 3 < 0 ? 0 : i - 3;
+				int tripleSum = Memo[i] - Memo[safeIdx];
+				if (tripleSum > triple) {
+					Memo[i] = Memo[i] - tripleSum + triple;
+				}
 			}
-			dfs(0, 0);
-			sb.append("#" + test_case + " " + answer + "\n");
-		}
 
+			Memo[12] = Math.min(Memo[12], year);
+			sb.append("#" + test_case + " " + Memo[12] + "\n");
+		}
 		System.out.println(sb.toString());
-	}
-
-	static void dfs(int monthIdx, int totalPay) {
-		if (monthIdx >= 12) {
-			answer = Math.min(answer, totalPay);
-			return;
-		}
-		// 현재까지 가능한 최소 비용인 answer보다 비싸지는 순간 가지치기
-		if (answer <= totalPay) {
-			return;
-		}
-
-		if (plan[monthIdx] == 0) {
-			dfs(monthIdx + 1, totalPay);
-		} else {
-			int currentMonth = Math.min(plan[monthIdx] * day, month);
-			dfs(monthIdx + 1, totalPay + currentMonth);
-			dfs(monthIdx + 3, totalPay + threeMonth);
-		}
 	}
 }
