@@ -70,8 +70,6 @@ public class Solution {
 			return;
 		}
 
-		if (injectCnt >= answer)
-			return;
 		int b = bits[depth];
 		bits[depth] = fullBit;
 		dfs(depth + 1, injectCnt + 1);
