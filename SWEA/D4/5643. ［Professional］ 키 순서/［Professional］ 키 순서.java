@@ -26,14 +26,18 @@ class Solution {
 			}
 
 			for (int k = 1; k <= N; k++) {
-				for (int s = 1; s <= N; s++) {
-					for (int e = 1; e <= N; e++) {
-						graph[s][e] = graph[s][e] || (graph[s][k] && graph[k][e]);
+				for (int i = 1; i <= N; i++) {
+					if (!graph[i][k])
+						continue;
+
+					for (int j = 1; j <= N; j++) {
+						if (graph[k][j]) {
+							graph[i][j] = true;
+						}
 					}
 				}
 			}
 
-			
 			for (int r = 1; r <= N; r++) {
 				int cnt = 0;
 				for (int c = 1; c <= N; c++) {
