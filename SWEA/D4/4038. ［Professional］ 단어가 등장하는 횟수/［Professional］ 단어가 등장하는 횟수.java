@@ -29,33 +29,37 @@ public class Solution {
 			return 0;
 		}
 
-		// 초기 해시 구하기
-		long bookHash = 0, patternHash = 0;
+		// 초기 해시값 구하기
+		long bookPartHash = 0;
+		long patternHash = 0;
+
 		for (int i = 0; i < pn; i++) {
-			bookHash = (bookHash * BASE + book.charAt(i)) % MOD;
-			patternHash = (patternHash * BASE + pattern.charAt(i)) % MOD;
+			bookPartHash = ((bookPartHash * BASE) + book.charAt(i)) % MOD;
+			patternHash = ((patternHash * BASE) + pattern.charAt(i)) % MOD;
 		}
 
-		// 최고 자릿값 구하기
+		// 최고 자리값 구하기
 		long pos = 1;
 		for (int i = 0; i < pn - 1; i++) {
 			pos = (pos * BASE) % MOD;
 		}
 
+		// 롤링 해시
 		int answer = 0;
 		for (int i = 0; i <= bn - pn; i++) {
-			if (bookHash == patternHash) {
+			if (bookPartHash == patternHash) {
 				answer++;
 			}
 
-			if (i < (bn - pn)) {
-				bookHash = (bookHash - pos * book.charAt(i)) % MOD;
-				if (bookHash < 0) {
-					bookHash += MOD;
+			if (i + pn < bn) {
+				bookPartHash = (bookPartHash - (book.charAt(i) * pos)) % MOD;
+				if (bookPartHash < 0) {
+					bookPartHash += MOD;
 				}
-				bookHash = ((bookHash * BASE) + book.charAt(i + pn)) % MOD;
+				bookPartHash = ((bookPartHash * BASE) + book.charAt(i + pn)) % MOD;
 			}
 		}
+
 		return answer;
 	}
 }
