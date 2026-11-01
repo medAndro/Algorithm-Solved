@@ -1,65 +1,98 @@
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
 
 public class Solution {
-	static final long MOD = 1_000_000_007;
-	static final long BASE = 307;
 
-	public static void main(String[] args) throws NumberFormatException, IOException {
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
+
 		int T = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
 
-		for (int test_case = 1; test_case <= T; test_case++) {
-			String book = br.readLine();
-			String pattern = br.readLine();
-			sb.append("#" + test_case + " " + rabinKarf(book, pattern) + "\n");
+		for (int tc = 1; tc <= T; tc++) {
+			String B = br.readLine();
+			String S = br.readLine();
+
+			sb.append("#").append(tc).append(" ").append(kmp(B, S)).append("\n");
 		}
 
-		System.out.println(sb.toString());
+		System.out.print(sb);
 	}
 
-	static int rabinKarf(String book, String pattern) {
-		int bn = book.length();
-		int pn = pattern.length();
+	static int kmp(String text, String pattern) {
+		int[] pi = makePi(pattern);
 
-		if (bn < pn) {
-			return 0;
-		}
+		int index = 0; // 책에서 현재 검사할 위치
+		int matchedLength = 0; // 현재까지 일치한 패턴의 길이
+		int count = 0;
 
-		// 초기 해시값 구하기
-		long bookPartHash = 0;
-		long patternHash = 0;
+		while (index < text.length()) {
 
-		for (int i = 0; i < pn; i++) {
-			bookPartHash = ((bookPartHash * BASE) + book.charAt(i)) % MOD;
-			patternHash = ((patternHash * BASE) + pattern.charAt(i)) % MOD;
-		}
+			char current = text.charAt(index);
+			char expected = pattern.charAt(matchedLength);
 
-		// 최고 자리값 구하기
-		long pos = 1;
-		for (int i = 0; i < pn - 1; i++) {
-			pos = (pos * BASE) % MOD;
-		}
+			// 문자가 일치하는 경우
+			if (current == expected) {
+				matchedLength++;
+				index++;
 
-		// 롤링 해시
-		int answer = 0;
-		for (int i = 0; i <= bn - pn; i++) {
-			if (bookPartHash == patternHash) {
-				answer++;
-			}
+				// 패턴 전체가 일치했는지 확인
+				if (matchedLength == pattern.length()) {
+					count++;
 
-			if (i + pn < bn) {
-				bookPartHash = (bookPartHash - (book.charAt(i) * pos)) % MOD;
-				if (bookPartHash < 0) {
-					bookPartHash += MOD;
+					// 중첩된 패턴을 추가로 찾기 위해 재설정
+					matchedLength = pi[matchedLength - 1];
 				}
-				bookPartHash = ((bookPartHash * BASE) + book.charAt(i + pn)) % MOD;
+			}
+
+			// 불일치하지만 이전에 일치한 부분이 있는 경우
+			else if (matchedLength > 0) {
+				matchedLength = pi[matchedLength - 1];
+				// index를 증가시키지 않고 다시 비교
+			}
+
+			// 불일치하고 이전에 일치한 부분도 없는 경우
+			else {
+				index++;
 			}
 		}
 
-		return answer;
+		return count;
 	}
+
+	static int[] makePi(String pattern) {
+		int[] pi = new int[pattern.length()];
+
+		int index = 1; // 현재 검사할 문자 위치
+		int matchedLength = 0; // 현재까지 일치한 접두사의 길이
+
+		while (index < pattern.length()) {
+			char current = pattern.charAt(index);
+			char expected = pattern.charAt(matchedLength);
+
+			// 문자가 일치하는 경우 - 일치하는 접두사/접미사 길이가 늘어남
+			if (current == expected) {
+				matchedLength++;
+
+				pi[index] = matchedLength;
+				index++;
+			}
+
+			// 불일치하지만 이전에 일치한 부분이 있는 경우
+			else if (matchedLength > 0) {
+				matchedLength = pi[matchedLength - 1];
+				// index를 증가시키지 않고 같은 문자를 더 짧은 접두사와 다시 비교
+			}
+
+			// 불일치하고 이전에 일치한 부분도 없는 경우
+			else {
+				pi[index] = 0;
+				index++;
+			}
+		}
+
+		return pi;
+	}
+
 }
