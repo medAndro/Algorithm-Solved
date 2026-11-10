@@ -1,35 +1,54 @@
 import java.util.*;
-
+import java.io.*;
 
 class Solution {
-	public int solution(int[][] maps) {
-		int[][] dist = new int[maps.length][maps[0].length];
-		dist[0][0] = 1;
-		ArrayDeque<int[]> queue = new ArrayDeque<>();
-		queue.offer(new int[] { 0, 0 });
-
-		int[] dr = { -1, 1, 0, 0 };
-		int[] dc = { 0, 0, -1, 1 };
-		while (!queue.isEmpty()) {
-			int[] polled = queue.poll();
-			int r = polled[0];
-			int c = polled[1];
-
-			for (int i = 0; i < 4; i++) {
-				int rr = r + dr[i];
-				int cc = c + dc[i];
-				if (rr >= 0 && cc >= 0 && rr < maps.length && cc < maps[0].length && maps[rr][cc] == 1
-						&& dist[rr][cc] == 0) {
-					if (rr == maps.length - 1 && cc == maps[0].length - 1) {
-						return dist[r][c] + 1;
-					}
-					dist[rr][cc] = dist[r][c] + 1;
-					queue.offer(new int[] { rr, cc });
-				}
-			}
-		}
-		int answer = dist[maps.length - 1][maps[0].length - 1];
-		answer = (answer == 0) ? -1 : answer;
-		return -1;
-	}
+    int[][] maps;
+    int nR,nC;
+    public int solution(int[][] maps) {
+        this.maps = maps;
+        nR = maps.length;
+        nC = maps[0].length;
+        return bfs();
+    }
+    
+    int[] dr = new int[] {1,-1,0,0};
+    int[] dc = new int[] {0,0,1,-1};
+    
+    int bfs(){
+        int[][] visit = new int[nR][nC];
+        visit[0][0] = 1;
+        ArrayDeque<int[]> dq = new ArrayDeque();
+        dq.offer(new int[]{0,0});
+        
+        while(!dq.isEmpty()){
+            int[] p = dq.poll();
+            int pr = p[0];
+            int pc = p[1];
+            
+            for(int di = 0; di<4; di++){
+                int nr = pr+dr[di];
+                int nc = pc+dc[di];
+                if(!isSafePos(nr, nc) || visit[nr][nc] != 0){
+                    continue;
+                }
+                if(maps[nr][nc] == 0){
+                    continue;
+                }
+                
+                visit[nr][nc] = visit[pr][pc]+1;
+                if(nr+1 == nR && nc+1 == nC){
+                    return visit[nr][nc];
+                }
+                dq.offer(new int[]{nr,nc});
+            
+            }
+        }
+        return -1;
+    }
+    boolean isSafePos(int r, int c){
+        if(r<0 || c<0 || r>=nR || c>=nC){
+            return false;
+        }
+        return true;
+    }
 }
